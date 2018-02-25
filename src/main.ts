@@ -1,6 +1,5 @@
 import { SystemEventManager } from "./util/system-event-manager";
 
-import { loadAnimations } from "./engine/animation-loader";
 import { createGameCanvas } from "./game-canvas";
 import { createGame } from "./game";
 import { createBlueprintFactory } from "./blueprint-factory";
@@ -19,14 +18,13 @@ async function startGame() {
     };
   })();
   
-  let _animations = await loadAnimations();
   let _systemEventManager = new SystemEventManager();
 
   let _gameCanvas = createGameCanvas(<HTMLCanvasElement>document.getElementById("mainCanvas"));
 
   let _blueprintFactory = createBlueprintFactory();
   
-  let _game = createGame(_gameCanvas, _systemEventManager, _animations, _blueprintFactory);
+  let _game = createGame(_gameCanvas, _systemEventManager, _blueprintFactory);
   
   requestAnimationFrame(update);
 }
