@@ -1,14 +1,13 @@
-﻿export class CellPositionComponent {
+﻿export class PositionComponent {
   x: number;
   y: number;
 
-  constructor(obj: CellPositionComponent) {
+  constructor(obj: PositionComponent) {
     Object.assign(this, obj);
   }
 }
 
 export class VelocityComponent {
-  speed: number;
   x: number;
   y: number;
 

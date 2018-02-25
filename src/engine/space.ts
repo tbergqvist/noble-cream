@@ -37,7 +37,7 @@ export class Entity {
 export interface Space {
   addSystem(system: ISystem): void;
   removeSystem(system: ISystem): void;
-  createEntity(blueprint: IEntityBlueprint, entityId?:string): string;
+  createEntity(blueprint: IEntityBlueprint, entityId: string): void;
   addEntity(entityId: string, components: ComponentContainer): void;
   removeEntity(entityId: string): void;
   enterFrame(timeInMs: number): void;
@@ -75,9 +75,8 @@ export function createSpace(_id: string) {
       _systems.delete(system);
     },
 
-    createEntity(blueprint: IEntityBlueprint, entityId:string): string {
+    createEntity(blueprint: IEntityBlueprint, entityId:string): void {
       _space.addEntity(entityId, deepCopy(blueprint.components));
-      return entityId;
     },
 
     addEntity(entityId: string, components: ComponentContainer) {

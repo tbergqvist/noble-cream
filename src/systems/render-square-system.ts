@@ -2,19 +2,18 @@
 import {ISystem} from "../engine/isystem";
 import {requiredComponent} from "../engine/node";
 import {GameCanvas} from "../game-canvas";
-import { CellPositionComponent, RenderSquareComponent } from "../components";
+import { PositionComponent, RenderSquareComponent } from "../components";
 
 const spriteSymbol = Symbol("pixi square sprite");
 
 export class SquareNode {
   @requiredComponent
-  cellPosition: CellPositionComponent;
+  cellPosition: PositionComponent;
   @requiredComponent
   square: RenderSquareComponent;
   [spriteSymbol]: PIXI.Graphics;
 }
 
-const cellSize = 50;
 export function createRenderSquareSystem(_renderer: GameCanvas): ISystem {
   let _nodes: NodeList<SquareNode>;
 
@@ -49,8 +48,8 @@ export function createRenderSquareSystem(_renderer: GameCanvas): ISystem {
       for (let i = 0; i < _nodes.length; ++i) {
         let node = _nodes.get(i);
         let pixiSprite = node[spriteSymbol];
-        pixiSprite.x = node.cellPosition.x * cellSize;
-        pixiSprite.y = node.cellPosition.y * cellSize;
+        pixiSprite.x = node.cellPosition.x;
+        pixiSprite.y = node.cellPosition.y;
 
       }
     },
