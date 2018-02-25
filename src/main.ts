@@ -3,6 +3,7 @@ import { SystemEventManager } from "./util/system-event-manager";
 import { createGameCanvas } from "./game-canvas";
 import { createGame } from "./game";
 import { createBlueprintFactory } from "./blueprint-factory";
+import "pixi.js";
 
 async function startGame() {
   let update = (() => {
@@ -29,4 +30,6 @@ async function startGame() {
   requestAnimationFrame(update);
 }
 
-startGame();
+setTimeout(() => {
+  startGame();
+});
