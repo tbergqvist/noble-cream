@@ -1,5 +1,5 @@
 import { IEntityBlueprint, EntityBlueprint } from "./engine/entity-blueprint";
-import { PositionComponent, RenderSquareComponent, VelocityComponent } from "./components";
+import { PositionComponent, RenderSquareComponent, ScoreComponent, HealthComponent, FollowedPathComponent, SpeedComponent, ObstacleComponent } from "./components";
 
 interface PositionParam {
   x: number;
@@ -9,6 +9,7 @@ interface PositionParam {
 export interface BlueprintFactory {
   createTower(params: PositionParam): IEntityBlueprint;
   createEnemy(params: PositionParam): IEntityBlueprint;
+  createPlayer(): IEntityBlueprint;
 }
 
 export function createBlueprintFactory(): BlueprintFactory {
@@ -16,23 +17,37 @@ export function createBlueprintFactory(): BlueprintFactory {
     createTower(position: PositionParam) {
       return new EntityBlueprint("Player")
         .addComponent(new PositionComponent(position))
+        .addComponent(new ObstacleComponent({}))
         .addComponent(new RenderSquareComponent({
           color: 0xff0000,
-          height: 50,
-          width: 50
-        }));
+          height: 30,
+          width: 30
+        }))
+        ;
     },
     createEnemy(position: PositionParam) {
       return new EntityBlueprint("Enemy")
         .addComponent(new PositionComponent(position))
         .addComponent(new RenderSquareComponent({
           color: 0x00ff00,
-          height: 20,
-          width: 20
+          height: 30,
+          width: 30
         }))
-        .addComponent(new VelocityComponent({
-          x: -10,
-          y: 0
+        .addComponent(new SpeedComponent({
+          speed: 2
+        }))
+        .addComponent(new FollowedPathComponent({
+          paths: [],
+          currentPath: 0
+        }));
+    },
+    createPlayer() {
+      return new EntityBlueprint("Player")
+        .addComponent(new ScoreComponent({
+          score: 0
+        }))
+        .addComponent(new HealthComponent({
+          healthLeft: 100
         }));
     }
   }

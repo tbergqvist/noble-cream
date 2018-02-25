@@ -7,11 +7,16 @@
   }
 }
 
-export class VelocityComponent {
-  x: number;
-  y: number;
+export class ObstacleComponent {
+  constructor(obj: ObstacleComponent) {
+    Object.assign(this, obj);
+  }
+}
 
-  constructor(obj: VelocityComponent) {
+export class SpeedComponent {
+  speed: number;
+
+  constructor(obj: SpeedComponent) {
     Object.assign(this, obj);
   }
 }
@@ -49,6 +54,36 @@ export class AnimationComponent {
   frameTimeMs: number;
 
   constructor(obj: AnimationComponent) {
+    Object.assign(this, obj);
+  }
+}
+
+export class ScoreComponent {
+  score: number;
+
+  constructor(obj: ScoreComponent) {
+    Object.assign(this, obj);
+  }
+}
+
+export class HealthComponent {
+  healthLeft: number;
+
+  constructor(obj: HealthComponent) {
+    Object.assign(this, obj);
+  }
+}
+
+interface Path {
+  x: number;
+  y: number;
+}
+
+export class FollowedPathComponent {
+  currentPath: number;
+  paths: Path[];
+
+  constructor(obj: FollowedPathComponent) {
     Object.assign(this, obj);
   }
 }
