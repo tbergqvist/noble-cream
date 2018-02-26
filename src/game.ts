@@ -21,6 +21,8 @@ export function createGame(_gameCanvas: GameCanvas, _systemEventManager: SystemE
   _space.addSystem(createEnemyReachEndSystem());
 
   _space.createEntity(_blueprintFactory.createTower({x: 30, y: 90}), guid());
+  _space.createEntity(_blueprintFactory.createTower({x: 30, y: 120}), guid());
+  _space.createEntity(_blueprintFactory.createTower({x: 30, y: 150}), guid());
   _space.createEntity(_blueprintFactory.createEnemy({x: 500, y: 90}), guid());
   _space.createEntity(_blueprintFactory.createPlayer(), "player");
 

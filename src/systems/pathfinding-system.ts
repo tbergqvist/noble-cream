@@ -19,9 +19,19 @@ export class ObstacleNode {
   position: PositionComponent;
 }
 
+interface Cell {
+  visited: boolean;
+  obstacle: boolean;
+  goal: boolean;
+  score: number;
+  x: number;
+  y: number;
+  from?: Cell;
+}
+
 function updatePathFinding(node: PathFindingNode, space: Space) {
   let obstacles = space.getNodes(ObstacleNode);
-  let board: any[] = [];
+  let board: Cell[][] = [];
   for (let i = 0; i < 20; ++i) {
     board[i] = [];
     for (let j = 0; j < 20; ++j) {
@@ -48,8 +58,8 @@ function updatePathFinding(node: PathFindingNode, space: Space) {
   let cellY = Math.floor(node.position.y / cellSize);
   let startCell = board[cellY][cellX];
   startCell.visited = true;
-  let currentCell = startCell;
-  let nextCells: any = [];
+  let currentCell: Cell | undefined = startCell;
+  let nextCells: Cell[] = [];
   let extraScore = 1;
   while(currentCell) {
     cellX = currentCell.x;
@@ -61,13 +71,15 @@ function updatePathFinding(node: PathFindingNode, space: Space) {
       board[cellY][cellX + 1],
     ];
     newCells = newCells.filter(cell => !!cell && !cell.visited && !cell.obstacle);
-    newCells.forEach(cell => cell.score-= extraScore);
+    newCells.forEach(cell => {
+      cell.score+= extraScore;
+      cell.from = currentCell;
+    });
     extraScore++;
 
-    nextCells = nextCells.concat(newCells).filter((cell: any) => !!cell && !cell.obstacle && !cell.visited).sort((cell1: any, cell2: any) => cell1.score - cell2.score);
+    nextCells = nextCells.filter(cell => !cell.visited).concat(newCells).sort((cell1, cell2) => cell1.score - cell2.score);
     let nextCell = nextCells[0];
     nextCell.visited = true;
-    nextCell.from = currentCell;
     if (nextCell.goal) {
       node.path.currentPath = 0;
       node.path.paths = [];
