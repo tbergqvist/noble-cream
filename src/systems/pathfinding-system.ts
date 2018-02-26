@@ -29,7 +29,7 @@ function updatePathFinding(node: PathFindingNode, space: Space) {
         visited: false,
         obstacle: false,
         goal: false,
-        score: j,
+        score: j * 1000,
         x: j,
         y: i
       };
@@ -41,11 +41,8 @@ function updatePathFinding(node: PathFindingNode, space: Space) {
   obstacles.forEach((node)=> {
     let cellX = Math.floor(node.position.x / cellSize);
     let cellY = Math.floor(node.position.y / cellSize);
-    console.log(cellY, cellX);
     board[cellY][cellX].obstacle = true;
   });
-
-  console.log(board);
 
   let cellX = Math.floor(node.position.x / cellSize);
   let cellY = Math.floor(node.position.y / cellSize);
@@ -53,17 +50,21 @@ function updatePathFinding(node: PathFindingNode, space: Space) {
   startCell.visited = true;
   let currentCell = startCell;
   let nextCells: any = [];
+  let extraScore = 1;
   while(currentCell) {
     cellX = currentCell.x;
     cellY = currentCell.y;
-    let yolo = [
+    let newCells = [
       board[cellY][cellX - 1],
       board[cellY + 1][cellX],
       board[cellY - 1][cellX],
       board[cellY][cellX + 1],
     ];
+    newCells = newCells.filter(cell => !!cell && !cell.visited && !cell.obstacle);
+    newCells.forEach(cell => cell.score-= extraScore);
+    extraScore++;
 
-    nextCells = nextCells.concat(yolo).filter((bla: any) => !!bla && !bla.obstacle && !bla.visited).sort((bla: any, bla2: any) => bla.score - bla2.score);
+    nextCells = nextCells.concat(newCells).filter((cell: any) => !!cell && !cell.obstacle && !cell.visited).sort((cell1: any, cell2: any) => cell1.score - cell2.score);
     let nextCell = nextCells[0];
     nextCell.visited = true;
     nextCell.from = currentCell;
@@ -78,7 +79,6 @@ function updatePathFinding(node: PathFindingNode, space: Space) {
       }
       node.path.paths = node.path.paths.reverse();
       node.path.paths = node.path.paths.splice(1);
-      console.log(node.path.paths);
       currentCell = undefined;
     } else {
       currentCell = nextCell;
